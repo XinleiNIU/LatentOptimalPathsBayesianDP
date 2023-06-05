@@ -1,0 +1,33 @@
+dataset: "ryanspeech"
+
+path:
+  corpus_path: "/home/xinleiniu/TIMIT/Dataset/RyanSpeech"
+  lexicon_path: "lexicon/librispeech-lexicon.txt"
+  raw_path: "./raw_data/RyanSpeech"
+  preprocessed_path: "./preprocessed_data/RyanSpeech"
+
+preprocessing:
+  val_size: 2000
+  text:
+    text_cleaners: ["english_cleaners"]
+    language: "en"
+  audio:
+    sampling_rate: 22050
+    max_wav_value: 32768.0
+    preemphasize: 0.97
+    ref_level_db: 20.0
+    num_freq: 1025
+    frame_length_sample: 1024
+    frame_shift_sample: 256
+    center: True
+    griffin_lim_iters: 60
+  mel:
+    normalize: True
+    n_mel_channels: 80
+    min_mel_freq: 0.
+    max_mel_freq: 8000. # please set to 8000 for HiFi-GAN vocoder, set to null for MelGAN vocoder
+    max_abs_value: 1
+    min_level_db: -100.0
+    power: 1.5
+  pitch:
+    normalization: True

@@ -1,0 +1,65 @@
+common:
+  num_samples: 1
+  latent_dim: 256
+  output_dim: 80
+  final_reduction_factor: 1
+  max_reduction_factor: 1
+  mel_text_len_ratio: 1
+  alpha: 15
+  
+transformer:
+  encoder:
+    embd_dim: 256
+    n_conv: 3
+    attention_heads: 2
+    ffn_hidden: 1024
+    conv_kernel: [9,1]
+    drop_rate: 0.2
+    n_blk: 4
+
+  decoder:
+    nblk: 4
+    attention_dim: 256
+    attention_heads: 2
+    post_n_conv: 5
+    conv_filters: 1024
+    conv_kernel: [9, 1]
+    drop_rate: 0.2
+
+  posterior:
+    n_conv: 3
+    conv_kernel: 3
+    post_hidden: 256
+    pos_drop_rate: 0
+
+  prior:
+    n_blk: 4
+    n_transformer_blk: 2
+    attention_dim: 256
+    attention_heads: 4
+    temperature: 1.0
+    ffn_hidden: 1024
+    inverse: False
+
+length_predictor:
+  dense:
+    activation: "identity"
+
+pitch_predictor:
+  filter_size: 128
+  kernel: 3
+  dropout: 0.2
+
+variance_embedding:
+  pitch_quantization: "linear" # support 'linear' or 'log', 'log' is allowed only if the pitch values are not normalized during preprocessing
+  energy_quantization: "linear" # support 'linear' or 'log', 'log' is allowed only if the energy values are not normalized during preprocessing
+  n_bins: 256
+
+max_seq_len: 2000
+multi_speaker: False
+add_pitch: False
+add_length_predict: False
+
+vocoder:
+  model: "Griffin-Lim" 
+  speaker: "universal" 

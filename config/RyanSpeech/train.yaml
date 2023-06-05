@@ -1,0 +1,32 @@
+path:
+  ckpt_path: "./output/ckpt/RyanSpeech"
+  log_path: "./output/log/RyanSpeech"
+  result_path: "./output/result/RyanSpeech"
+  
+optimizer:
+  batch_size: 18
+  betas: [0.9, 0.98]
+  eps: 0.000000001
+  grad_clip_thresh: 1.0
+  grad_acc_step: 1
+  init_lr: 0.000125
+  baseline: True
+step:
+  total_step: 9999999
+  log_step: 1
+  synth_step: 1000
+  save_step: 5000
+  debug_step: 1000000000000
+
+length:
+  length_weight: 1.
+  mel_weight: 1.
+kl:
+  kl_weight: 1.
+  kl_weight_init: 0.000001
+  kl_weight_increase_epoch: 1000
+  kl_weight_end: 0.0001
+ 
+dataset: 'ryanspeech'
+
+
