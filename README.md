@@ -1,5 +1,7 @@
 # Implementation of Latent Optimal Path by Gumbel Propagation for Variational Bayesian Dynamic Programming
 
+This is a pytorch-based implementation of the [paper](https://arxiv.org/abs/2306.02568): Latent Optimal Paths by Gumbel Propagation for Variational Bayesian Dynamic Programming. 
+
 ## Example implementation of a general DAG 
 
 The GeneralDAG folder gives example implimentation including any general 1D DAG, Time series alignment and monotonic alignment.
@@ -114,7 +116,7 @@ to synthesize all utterances in ``preprocessed_data/RyanSpeech/val.txt``
 
 ## Pretrianed Model
 
-The pretrianed BDPVAE-TTS on RyanSpeech dataset can be download via [this Onedrive Link](https://anu365-my.sharepoint.com/:u:/g/personal/u6536294_anu_edu_au/EbklO7aYBD1KrtHtR3sAxbYB5pynwIYy9Iv3E5Z8YlVtrA?e=JYGtjH). Please put it to the root ./output/ckpt/RyanSpeech/
+The pretrianed BDPVAE-TTS on RyanSpeech dataset can be download via [this Onedrive Link](https://anu365-my.sharepoint.com/:u:/g/personal/u6536294_anu_edu_au/EbklO7aYBD1KrtHtR3sAxbYB5pynwIYy9Iv3E5Z8YlVtrA?e=JYGtjH). Please put it to the path: ./output/ckpt/RyanSpeech/
 
 
 # Reference
