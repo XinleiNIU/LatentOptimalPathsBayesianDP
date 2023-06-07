@@ -80,7 +80,7 @@ def prepare(train_config, preprocess_config, rank, world_size, batch_size=32, pi
                         pin_memory=pin_memory, 
                         num_workers=num_workers, 
                         drop_last=False, 
-                        # shuffle=True, 
+                        shuffle=True, 
                         sampler=sampler,
                         collate_fn=dataset.collate_fn,)
     
