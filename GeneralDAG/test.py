@@ -7,21 +7,66 @@ import numpy as np
 import random 
 import bisect
 import collections
-
+import matplotlib.pyplot as plt
 
 class test:
 	def __init__(self):
-		self.alpha = np.random.rand() * 2 + 0.05
-		self.wdag = WeightedDAG.random_dag(n=7, threshold=0.5, maxiter=9999, alpha=self.alpha)
+		# self.alpha = np.random.rand() * 2 + 0.05
+		self.alpha = 0.5
+		self.wdag = WeightedDAG.random_dag(n=6, threshold=0.5, maxiter=9999, alpha=self.alpha)
 		self.W = -self.wdag.to_matrix() # Convert argmin to argmax problem
 		self.sampler = sample(self.alpha,self.W)
-		
+
 		self.path_prob()
+		self.sample_dict = self.batch_bayesian_sample(100,True)
+		self.sample_dict_50 = self.batch_bayesian_sample(50,True)
+		self.sample_dict_250 = self.batch_bayesian_sample(250,True)
+		self.plot_compare_figure(save_name="alpha_"+str(self.alpha))
+		pdb.set_trace()
 		self.path_prob_backward()
 		self.check_cumulative()
 		self.check_sampling()
 		self.check_omega()
-		
+	
+	def plot_helper(self,dic):
+		keys = list(dic.keys())
+		values = list(dic.values())
+		return keys, values
+
+	def plot_compare_figure(self, save_name = None):
+		# GT key& value
+		keys, values_GT = self.plot_helper(self.path_prob)
+
+		# 50 samples key & value
+		_, values_50 = self.plot_helper(self.sample_dict_50)
+
+		# 100 samples
+		_, values_100 = self.plot_helper(self.sample_dict)
+
+		# 250 samples
+		_, values_250 = self.plot_helper(self.sample_dict_250)
+
+		# keys_text = list(self.sample_dict.keys())
+		# values_BDP = list(self.sample_dict.values())
+		# values_GT = list(self.path_prob.values())
+		keys_num = np.arange(len(keys))
+		fig, ax = plt.subplots()
+		plt.xticks(rotation=45,fontsize=8)
+		ax.plot(keys_num, np.array(values_50), marker='o', linestyle='-',label='BDP: 50 samples')
+		ax.plot(keys_num, np.array(values_100), marker='o', linestyle='-',label='BDP: 100 samples')
+		ax.plot(keys_num, np.array(values_250), marker='o', linestyle='-',label='BDP: 250 samples')
+		ax.plot(keys_num, np.array(values_GT), marker='o', linestyle='-',label='GT')
+		plt.xticks(keys_num, keys)
+		plt.legend()
+		plt.title(f'Distribution of the latent path with alpha = {self.alpha}')
+
+		# Add labels for the x and y axes
+		# plt.xlabel('Latent paths')
+		plt.ylabel('Probability')
+		if save_name is not None:
+			plt.savefig('./'+str(save_name)+'.png',bbox_inches='tight')
+		else:
+			plt.show()
 
 	def check_sampling(self):
 
@@ -95,20 +140,41 @@ class test:
 		print('*************************************************************************')
 		# Return its mode 
 		return max(sample_dic,key=sample_dic.get)
-	
+
 	def bayesian_sample(self):
 		sample_dic = dict((path,0) for path in self.wdag.complete_paths())
 		for r in range(10000):
-		print('*************************************************************************')
+		# print('*************************************************************************')
 		# Return its mode 
 			sampled_path,_,_ = self.sampler.sampling(self.W)
 
 			sample_dic[tuple(sampled_path)] += 1
-		print('*************************************************************************')
-		print('Complete sampling paths by the transition matrix...')
-		print('Sample outcomes:', sample_dic)
-		print('Mode path:',max(sample_dic,key=sample_dic.get))
+		# print('*************************************************************************')
+		# print('Complete sampling paths by the transition matrix...')
+		# print('Sample outcomes:', sample_dic)
+		# print('Mode path:',max(sample_dic,key=sample_dic.get))
 		return max(sample_dic,key=sample_dic.get)
+
+	def batch_bayesian_sample(self,n,return_prob=False):
+		"""
+			Return sampled path dict
+		"""
+		sample_dic = dict((path,0) for path in self.wdag.complete_paths())
+		for r in range(n):
+		# print('*************************************************************************')
+		# Return its mode 
+			sampled_path,_,_ = self.sampler.sampling(self.W)
+
+			sample_dic[tuple(sampled_path)] += 1
+		# obtain sample approximate probabilty
+		if return_prob:
+			for key in sample_dic:
+				sample_dic[key] = sample_dic[key]/n
+		# print('*************************************************************************')
+		# print('Complete sampling paths by the transition matrix...')
+		# print('Sample outcomes:', sample_dic)
+		# print('Mode path:',max(sample_dic,key=sample_dic.get))
+		return sample_dic
 
 	def path_prob(self):
 		path_dict = {}

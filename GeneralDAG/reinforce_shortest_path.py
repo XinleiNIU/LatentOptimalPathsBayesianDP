@@ -72,6 +72,7 @@ class WeightedDAG:
 
     @classmethod
     def random_dag(cls, n, threshold, maxiter, alpha):
+        np.random.seed(101)
         for iter in range(maxiter):
             mat = np.random.randn(2 * n, 2 * n)
             mask = np.random.rand(2 * n, 2 * n) < threshold
@@ -240,7 +241,7 @@ class WeightedDAG:
         q[1:] = np.inf
   
         for i, d in enumerate(self.conductance):
-            pdb.set_trace()
+            # pdb.set_trace()
             for j, w in d.items():
                 if q[i] + w < q[j]:
                     q[j] = q[i] + w
