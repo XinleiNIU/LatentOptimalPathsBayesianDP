@@ -12,12 +12,13 @@ import matplotlib.pyplot as plt
 class test:
 	def __init__(self):
 		# self.alpha = np.random.rand() * 2 + 0.05
-		self.alpha = 0.5
-		self.wdag = WeightedDAG.random_dag(n=6, threshold=0.5, maxiter=9999, alpha=self.alpha)
+		self.alpha =0.5
+		self.wdag = WeightedDAG.random_dag(n=8, threshold=0.5, maxiter=9999, alpha=self.alpha)
 		self.W = -self.wdag.to_matrix() # Convert argmin to argmax problem
 		self.sampler = sample(self.alpha,self.W)
 
 		self.path_prob()
+		self.sample_dict_1 = self.batch_bayesian_sample(1,True)
 		self.sample_dict = self.batch_bayesian_sample(100,True)
 		self.sample_dict_50 = self.batch_bayesian_sample(50,True)
 		self.sample_dict_250 = self.batch_bayesian_sample(250,True)
@@ -38,6 +39,9 @@ class test:
 		keys, values_GT = self.plot_helper(self.path_prob)
 
 		# 50 samples key & value
+		_, values_1 = self.plot_helper(self.sample_dict_1)
+
+		# 50 samples key & value
 		_, values_50 = self.plot_helper(self.sample_dict_50)
 
 		# 100 samples
@@ -52,6 +56,7 @@ class test:
 		keys_num = np.arange(len(keys))
 		fig, ax = plt.subplots()
 		plt.xticks(rotation=45,fontsize=8)
+		ax.plot(keys_num, np.array(values_1), marker='o', linestyle='-',label='BDP: 1 samples')
 		ax.plot(keys_num, np.array(values_50), marker='o', linestyle='-',label='BDP: 50 samples')
 		ax.plot(keys_num, np.array(values_100), marker='o', linestyle='-',label='BDP: 100 samples')
 		ax.plot(keys_num, np.array(values_250), marker='o', linestyle='-',label='BDP: 250 samples')
