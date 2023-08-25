@@ -11,19 +11,19 @@ import matplotlib.pyplot as plt
 
 class test:
 	def __init__(self):
-		# self.alpha = np.random.rand() * 2 + 0.05
-		self.alpha =0.5
+		self.alpha = np.random.rand() * 2 + 0.05
 		self.wdag = WeightedDAG.random_dag(n=8, threshold=0.5, maxiter=9999, alpha=self.alpha)
 		self.W = -self.wdag.to_matrix() # Convert argmin to argmax problem
 		self.sampler = sample(self.alpha,self.W)
-
 		self.path_prob()
-		self.sample_dict_1 = self.batch_bayesian_sample(1,True)
-		self.sample_dict = self.batch_bayesian_sample(100,True)
-		self.sample_dict_50 = self.batch_bayesian_sample(50,True)
-		self.sample_dict_250 = self.batch_bayesian_sample(250,True)
-		self.plot_compare_figure(save_name="alpha_"+str(self.alpha))
-		pdb.set_trace()
+
+		# Plot GT density plot and MCMC density plot of latent optimal paths given the DAG
+		# self.sample_dict_1 = self.batch_bayesian_sample(1,True)
+		# self.sample_dict = self.batch_bayesian_sample(100,True)
+		# self.sample_dict_50 = self.batch_bayesian_sample(50,True)
+		# self.sample_dict_250 = self.batch_bayesian_sample(250,True)
+		# self.plot_compare_figure(save_name="alpha_"+str(self.alpha))
+
 		self.path_prob_backward()
 		self.check_cumulative()
 		self.check_sampling()

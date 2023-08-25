@@ -2,9 +2,9 @@
 
 This is a pytorch-based implementation of the [paper](https://arxiv.org/abs/2306.02568): Latent Optimal Paths by Gumbel Propagation for Variational Bayesian Dynamic Programming. 
 
-## Example implementation of a general DAG 
+## Example implementation of Bayesian Dynamic Programming for general DAG
 
-The GeneralDAG folder gives example implimentation including any general 1D DAG, Time series alignment and monotonic alignment.
+The GeneralDAG folder gives example implimentation including any general toy DAG, Time series alignment and monotonic alignment.
 
 ### sample.py:
 Implementation of Bayesian Dynamic Programming on any general DAG given the distance matrix (W) and a temperature scalar $\alpha$.
@@ -17,8 +17,6 @@ The function compute the optimal path by argmax(W).
 The compute complexity is $O(N)$ where N is the node size and all computations are based on numpy array.
 
 ### test.py
-
-=======
 
 Verify the correctness of sample.py by comparing with brue force method and argmin(-W), including:
 1. Check cumulative probabilities.
@@ -35,22 +33,22 @@ The time_series_alginment folder contains the implementation the Bayesian DP on 
 4. MLE.py: Treat the distance matrix as parameters, using MLE to get an approximated distance matrix theta given paths sampled from a ground truth Gibbs distribution.
 5. Gradient_check.py: Check the MLE gradient when using MLE.py.
 
-![DTW](./Figure/DTW_example.png)
+![DTW](./Figure/DTW-DAG.png)
 
 
 ## Monotonic Alignment
 
-The monotonic alignment is a special case of time series alignment, which uses right and diagonal moves only. Its computational DAG shows below:
+The monotonic alignment uses right and diagonal moves only. Its computational DAG shows below:
 ![Phoneme-Duration-Alignment](./Figure/MA-DAG.png)
 
-Pseudo algorithms and detail explaination can be found at Section 4.2 on the paper. This folder contains:
+Pseudo algorithms and detail explaination can be found at Section 4.2 on the appendex of the paper. This folder contains:
 
 1. ma.py: a class of implementation of whole Bayesian DP on Monotonic alignment DAG.
 2. ma_verify.py: A series of Monte Carlo method to verify the correctness of ma.py.
 
-# Example: End-to-end Text-to-Speech with Monotonic Alignment
+# Example: End-to-end Text-to-Speech with Monotonic Alignment 
 
-Datasets: RyanSpeech [RyanSpeech: A Corpus for Conversational Text-to-Speech Synthesis](https://arxiv.org/abs/2106.08468)
+This part contains the implementation codes of the BDPVAE-TTS on the [RyanSpeech](https://arxiv.org/abs/2106.08468) dataset.
 
 
 ## Dependencies
@@ -78,7 +76,7 @@ cd monotonic_align; python setup.py build_ext --inplace
 
 ## Training
 
-Train your model with dpp
+Train your model with DDP
 
 ```
 python3 train_ddp.py -p config/RyanSpeech/preprocess.yaml -m config/RyanSpeech/model.yaml -t config/RyanSpeech/train.yaml
@@ -116,10 +114,10 @@ to synthesize all utterances in ``preprocessed_data/RyanSpeech/val.txt``
 
 ## Pretrianed Model
 
-The pretrianed BDPVAE-TTS on RyanSpeech dataset can be download via [this Onedrive Link](https://anu365-my.sharepoint.com/:u:/g/personal/u6536294_anu_edu_au/EbklO7aYBD1KrtHtR3sAxbYB5pynwIYy9Iv3E5Z8YlVtrA?e=JYGtjH). Please put it to the path: ./output/ckpt/RyanSpeech/
+The pretrianed BDPVAE-TTS on RyanSpeech dataset can be download via [this Onedrive Link](https://anu365-my.sharepoint.com/:u:/g/personal/u6536294_anu_edu_au/EbklO7aYBD1KrtHtR3sAxbYB5pynwIYy9Iv3E5Z8YlVtrA?e=JYGtjH). Please put it to the path: ``./output/ckpt/RyanSpeech/``
 
 
-# Reference
+# Reference 
 
 [keonlee's VAENAR-TTS](https://github.com/keonlee9420/VAENAR-TTS);
 [Glow-TTS](https://github.com/jaywalnut310/glow-tts);
